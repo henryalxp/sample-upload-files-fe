@@ -12,6 +12,7 @@ export class UploadFileService {
     pushFileToStorage(file: File): Observable<HttpEvent<{}>> {
         const data: FormData = new FormData();
         data.append('file', file);
+        // data.append('info', info)
         const newRequest = new HttpRequest(
             'POST',
             'http://localhost:8080/savefile',
@@ -25,14 +26,8 @@ export class UploadFileService {
 
     pushFilesToStorage(files: FileList): Observable<HttpEvent<{}>> {
         const data: FormData = new FormData();
-        // var values = [];
         Array.from(files).forEach(file => {
             console.log(file);
-            // var value = {
-            //     name: file.name,
-            //     file: file
-            // };
-            // values.push(value);
             data.append('files',file);
         });
         const newRequest = new HttpRequest(

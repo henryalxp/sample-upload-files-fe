@@ -35,6 +35,24 @@ export class AppComponent {
       );
   }
 
+  uploadFilesOneByOne() {
+    this.progress.percentage = 0;
+    Array.from(this.selectedFiles).forEach(currentFileUpload => {
+      this.uploadService
+      .pushFileToStorage(this.currentFileUpload)
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress.percentage = Math.round(100 * event.loaded / event.total);
+          console.log('uploading percentage: ' + this.progress.percentage);
+        } else if (event instanceof HttpResponse) {
+          console.log('File Successfully Uploaded');
+        }
+        this.selectedFiles = undefined;
+      }
+      );
+    });
+  }
+
   uploadFiles() {
     this.progress.percentage = 0;
     console.log("amount of files to be uploaded: " + this.selectedFiles.length);
